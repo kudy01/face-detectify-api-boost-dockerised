@@ -1,2 +1,2 @@
-# face-detectify-api-boost-dockerised
-Including the api for the face-detectify app as well as the postgres database in a docker container
+# Face-Detectify-API
+Server for the Face Detectify app built using Node and Express 

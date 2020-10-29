@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+
+   #Backend API 
+   face-detectify-api: 
+      container_name: backend
+      build: ./
+      command: npm start 
+      working_dir: /usr/src/Face-Detectify-API-BeforeDeployment
+      environment: 
+         POSTGRES_URI: postgres://kudy:secret@postgres:5432/face-detectify-docker
+      links:
+         - postgres
+      ports: 
+         - "3000:3000"
+      volumes: 
+         - ./:/usr/src/Face-Detectify-API-BeforeDeployment
+
+
+   # Postgres
+   postgres:
+      environment: 
+         POSTGRES_USER: kudy
+         POSTGRES_PASSWORD: secret
+         POSTGRES_DB: face-detectify-docker
+         POSTGRES_HOST: postgres 
+      build: ./postgres
+      ports:
+         - "5432:5432"
