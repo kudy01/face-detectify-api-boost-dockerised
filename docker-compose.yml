@@ -11,8 +11,10 @@ services:
       working_dir: /usr/src/Face-Detectify-API-BeforeDeployment
       environment: 
          POSTGRES_URI: postgres://kudy:secret@postgres:5432/face-detectify-docker
+         REDIS_URI: redis://redis:6379
       links:
          - postgres
+         - redis
       ports: 
          - "3000:3000"
       volumes: 
@@ -29,3 +31,9 @@ services:
       build: ./postgres
       ports:
          - "5432:5432"
+
+   # Redis 
+   redis:
+      image: redis
+      ports: 
+         - "6379:6379"
