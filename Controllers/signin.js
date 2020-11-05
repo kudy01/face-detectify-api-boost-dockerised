@@ -27,8 +27,14 @@ const handleSignin = (req, res, db, bcrypt) =>{
 
 }
 
-const getAuthTokenId = () => {
-	console.log("Ok authorization")
+const getAuthTokenId = (req, res) => {
+	const { authorization } = req.headers;
+	return redisClient.get(authorization, (err, reply) => {
+		if(err || !reply) {
+			return res.status(400).json('Unauthorised')
+		}
+		return res.json({id: reply})
+	})
 }
 
 const signToken = (email) => {
@@ -48,12 +54,12 @@ const createSession = (user) => {
 		.then(()=> {
 			return { success: 'true', userId: id, token: token }
 		})
-		.catch(console.log)
+		.catch(err=> res.status(400).json('Invalid Email or Password'))
 }
 
 const signinAuthentication = (db, bcrypt) => (req, res) => { //higher order as it returns another function
 	const { authorization } = req.headers;
-	return authorization ? getAuthTokenId() : 
+	return authorization ? getAuthTokenId(req, res) : 
 	handleSignin(req, res, db, bcrypt) // handle sign in does not perform checks because it does not handle the end point anymore, instead it returns a Promise which is handled by this method.
 		.then(user => {
 			return user.id && user.email ?
