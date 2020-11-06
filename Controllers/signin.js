@@ -70,5 +70,6 @@ const signinAuthentication = (db, bcrypt) => (req, res) => { //higher order as i
 } 
 
 module.exports = {
-	signinAuthentication
+	signinAuthentication,
+	redisClient
 };
